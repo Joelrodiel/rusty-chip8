@@ -1,5 +1,6 @@
 use crate::cpu::Cpu;
 use crate::rand::Rng;
+use std::num::Wrapping;
 
 // 0x00E0: CLS; Clear the display.
 pub fn cls(cpu: &mut Cpu) {
@@ -67,7 +68,11 @@ pub fn ld_vx_kk(cpu: &mut Cpu) {
 
 // 7xkk: ADD Vx, kk; Set Vx += kk.
 pub fn add_vx_kk(cpu: &mut Cpu) {
-    cpu.v[cpu.get_x() as usize] += cpu.get_kk();
+    let vx = cpu.v[cpu.get_x() as usize] as u16;
+    let val = cpu.get_kk() as u16;
+    let result = vx + val;
+
+    cpu.v[cpu.get_x() as usize] = result as u8;
 
     cpu.inc_pc();
 }
