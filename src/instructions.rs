@@ -220,6 +220,7 @@ pub fn drw_vx_vy_n(cpu: &mut Cpu) {
     cpu.v[0xF] = 0;
     for byte in 0..rows {
         let sprite = cpu.memory[(cpu.i + (byte as u16)) as usize];
+        println!("SPR: {}, I: {}, V0: {}", sprite, cpu.i + (byte as u16), cpu.v[0]);
 
         let y = (vy + byte) % 32;
         for bit in 0..8 {
@@ -310,8 +311,10 @@ pub fn ld_b_vx(cpu: &mut Cpu) {
 }
 
 // 0xFx55: LD [I], Vx; Store regs V0 through Vx in memory starting at location I.
+// Note: We do the (cpu.get_x() + 1) because we might want to only fill V0,
+//       thus there should atleast be one iteration.
 pub fn ld_i_vx(cpu: &mut Cpu) {
-    for i in 0..cpu.get_x() {
+    for i in 0..(cpu.get_x() + 1) {
         cpu.memory[(cpu.i + (i as u16)) as usize] = cpu.v[i as usize];
     }
 
@@ -319,8 +322,10 @@ pub fn ld_i_vx(cpu: &mut Cpu) {
 }
 
 // 0xFx65: LD Vx, [I]; Read regs V0 through from memory starting at location I.
+// Note: We do the (cpu.get_x() + 1) because we might want to only fill V0,
+//       thus there should atleast be one iteration.
 pub fn ld_vx_i(cpu: &mut Cpu) {
-    for i in 0..cpu.get_x() {
+    for i in 0..(cpu.get_x() + 1) {
         cpu.v[i as usize] = cpu.memory[(cpu.i + (i as u16)) as usize];
     }
 
