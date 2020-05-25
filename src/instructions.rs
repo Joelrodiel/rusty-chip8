@@ -26,6 +26,7 @@ pub fn jp(cpu: &mut Cpu) {
 // 0x2nnn: CALL nnn; Call subroutine at nnn.
 pub fn call(cpu: &mut Cpu) {
     cpu.sp += 1;
+    cpu.inc_pc();
     cpu.stack[cpu.sp] = cpu.pc as u16;
     cpu.pc = cpu.get_nnn() as usize;
 }
