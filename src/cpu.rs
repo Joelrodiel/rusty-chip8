@@ -38,7 +38,7 @@ impl Cpu {
         let data = &mut vec![0; 0x200];
         let mut program_file = File::open(file_name).expect("Game was not found!");
         let mut buffer = [0; 3584];
-        let buffer_size = program_file.read(&mut buffer[..]).expect("Error reading file!");
+        let _buffer_size = program_file.read(&mut buffer[..]).expect("Error reading file!");
 
         self.load_fontset();
 
@@ -153,6 +153,6 @@ impl Cpu {
     pub fn get_nnn(&self) -> u16 { self.opcode & 0x0FFF }
     pub fn get_kk(&self) -> u8 { (self.opcode & 0x00FF) as u8 }
     pub fn get_x(&self) -> u8 { ((self.opcode & 0x0F00) >> 8) as u8 }
-    pub fn get_y(&self) -> u8 { ((self.opcode & 0x00F0) >> 8) as u8 }
+    pub fn get_y(&self) -> u8 { ((self.opcode & 0x00F0) >> 4) as u8 }
     pub fn get_n(&self) -> u8 { (self.opcode & 0x000F) as u8 }
 }
